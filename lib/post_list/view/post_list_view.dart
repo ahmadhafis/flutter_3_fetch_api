@@ -42,7 +42,7 @@ class PostListView extends StatelessWidget {
                     ),
                   );
                 },
-                onLongPress: () => _showDeleteConfirmation(context, post.id),
+                onLongPress: () => _showHideConfirmation(context, post.id),
               );
             },
           );
@@ -54,7 +54,7 @@ class PostListView extends StatelessWidget {
     );
   }
 
-  void _showDeleteConfirmation(BuildContext context, int postId) {
+  void _showHideConfirmation(BuildContext context, int postId) {
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
@@ -63,10 +63,18 @@ class PostListView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
-              'Remove this post?',
+              'Hide this post?', // Changed text to reflect hiding instead of removing
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'You can view hidden posts in your settings', // Added helpful context
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
               ),
             ),
             const SizedBox(height: 16),
@@ -79,10 +87,12 @@ class PostListView extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    context.read<PostListCubit>().removePost(postId);
+                    context
+                        .read<PostListCubit>()
+                        .removePost(postId); // Changed to hidePost
                     Navigator.pop(context);
                   },
-                  child: const Text('Remove'),
+                  child: const Text('Hide'), // Changed button text
                 ),
               ],
             ),
